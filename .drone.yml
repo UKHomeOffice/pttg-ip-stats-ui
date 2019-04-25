@@ -24,10 +24,24 @@ pipeline:
       branch: [master, EE-16843-simple-ui] # TODO EE-16843 Make master only once happy that deployment works
       event: push
 
+  tag-docker-image-with-git-tag:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    secrets:
+      - docker_password
+    commands:
+      - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-stats-ui quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$${DRONE_TAG}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$${DRONE_TAG}
+    when:
+      event: tag
+
   clone-kube-project:
     image: plugins/git
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-stats-ui.git
+      - cd kube-pttg-ip-stats-ui && git checkout EE-16843-first-deployment-with-ingress && cd .. # TODO EE-16843 Remove once on master
     when:
       event: [push, deployment, tag]
 
@@ -42,7 +56,6 @@ pipeline:
       - pttg_ip_dev
     commands:
       - cd kube-pttg-ip-stats-ui
-      - git checkout EE-16843-first-deployment-with-ingress # TODO EE-16843 Remove once on master
       - ./deploy.sh
     when:
       branch: [master, EE-16843-simple-ui] # TODO EE-16843 Make master only once happy that deployment works
