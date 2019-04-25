@@ -1,2 +1,2 @@
 # pttg-ip-stats-ui
-IPS Stats for Benefits Realisation UI
+UI for IPS Benefits Realisation Stats
