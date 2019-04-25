@@ -7,5 +7,5 @@ pipeline:
     commands:
       - docker build -t pttg-ip-stats-ui .
     when:
-      branch: [master, EE-16843-add-drone-build]
+      branch: [master, EE-16843-add-drone-build] 
       event: push
