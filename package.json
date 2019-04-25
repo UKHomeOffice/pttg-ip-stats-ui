@@ -18,9 +18,7 @@
   },
   "homepage": "https://github.com/UKHomeOffice/pttg-ip-stats-ui#readme",
   "dependencies": {
-    "express": "^4.16.4"
-  },
-  "devDependencies": {
+    "express": "^4.16.4",
     "gulp": "^4.0.1"
   }
 }
