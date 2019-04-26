@@ -52,15 +52,15 @@ describe('Stats UI server', function() {
 
     it('returns any errors from IP API to caller', function testErrorForwarding(done) {
         const someErrorHttpCode = 500;
-        const someResponse = 'some response'
-        
+        const someResponse = 'some response';
+
         mockRequire('request', function(_, callback) {
             callback('any error', someErrorHttpCode, someResponse);
         });
         server = mockRequire.reRequire('./server');
 
         request(server)
-        .get('/?taxYear=2018/2019')
-        .expect(someErrorHttpCode, someResponse, done)
+            .get('/?taxYear=2018/2019')
+            .expect(someErrorHttpCode, someResponse, done)
     });
 })
