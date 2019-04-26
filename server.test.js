@@ -1,3 +1,4 @@
+'use strict';
 const request = require('supertest');
 
 describe('Stats UI server', function () {

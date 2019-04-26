@@ -1,7 +1,9 @@
+'use strict';
 const express = require('express');
+const config = require('./config');
 
 const app = express();
-const port = process.env.SERVER_PORT || '8000';
+const port = config.SERVER_PORT;
 
 app.get('/healthz', function (req, res) {
   res.send({env: process.env.ENV, status: 'OK'})

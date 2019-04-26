@@ -18,7 +18,7 @@ RUN groupadd -r ${GROUP} && \
 COPY . /app
 RUN npm --loglevel warn install
 
-RUN chown -R ${USER}:${GROUP} /app
+RUN chown ${USER}:${GROUP} /app/run-test.sh
 
 USER ${USER_ID}
 
