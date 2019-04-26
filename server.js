@@ -9,8 +9,17 @@ app.get('/healthz', function(req, res) {
 })
 
 app.get('/', function(req, res) {
-    request({url: '/statistics'}, (error, response, body) => {
-        res.send(body);
+    const requestOptions = {
+        url: '/statistics',
+        baseUrl: 'http://localhost:8081/',
+        qs: req.query,
+        headers: {
+            'x-auth-username': req.get('x-auth-username'),
+            'x-auth-userid': req.get('x-auth-userid')
+        }
+    };
+    request(requestOptions, (error, response, body) => {
+        res.status(response).send(body);
     })
 })
 
