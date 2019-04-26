@@ -9,7 +9,7 @@ app.get('/healthz', function(req, res) {
 })
 
 app.get('/', function(req, res) {
-    request({}, (error, response, body) => {
+    request({url: '/statistics'}, (error, response, body) => {
         res.send(body);
     })
 })
