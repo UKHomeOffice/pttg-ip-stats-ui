@@ -7,7 +7,7 @@ pipeline:
     commands:
       - docker build -t pttg-ip-stats-ui .
     when:
-      branch: [master, EE-16843-add-test-task] # TODO EE-16843 remove when tested
+      branch: master
       event: push
 
   test:
@@ -31,5 +31,5 @@ pipeline:
       - docker tag pttg-ip-stats-ui quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
     when:
-      branch: [master, EE-16843-add-test-task] # TODO EE-16843 remove when tested
+      branch: master
       event: push
