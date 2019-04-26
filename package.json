@@ -4,8 +4,7 @@
   "description": "UI for IPS Benefits Realisation Stats",
   "main": "server.js",
   "scripts": {
-    "test": "mocha server.test.js",
-    "postinstall": "gulp"
+    "test": "mocha server.test.js"
   },
   "repository": {
     "type": "git",
