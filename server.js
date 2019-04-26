@@ -7,6 +7,8 @@ app.get('/healthz', function (req, res) {
   res.send({env: process.env.ENV, status: 'OK'})
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log('ui on:' + port)
 })
+
+module.exports = server;
