@@ -16,12 +16,10 @@ RUN groupadd -r ${GROUP} && \
     chown -R ${USER}:${GROUP} /app
 
 COPY . /app
-RUN npm --loglevel warn install --only=prod
+RUN npm --loglevel warn install
 
-RUN chmod a+x /app/run.sh
+RUN chown -R ${USER}:${GROUP} /app
 
 USER ${USER_ID}
 
-EXPOSE 8000
-
-ENTRYPOINT /app/run.sh
+ENTRYPOINT /app/run-test.sh

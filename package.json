@@ -4,8 +4,7 @@
   "description": "UI for IPS Benefits Realisation Stats",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "gulp"
+    "test": "mocha server.test.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +17,10 @@
   },
   "homepage": "https://github.com/UKHomeOffice/pttg-ip-stats-ui#readme",
   "dependencies": {
-    "express": "^4.16.4",
-    "gulp": "^4.0.1"
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.4",
+    "supertest": "^4.0.2"
   }
 }
