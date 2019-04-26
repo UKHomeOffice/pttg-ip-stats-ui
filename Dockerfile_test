@@ -1,0 +1,25 @@
+FROM quay.io/ukhomeofficedigital/nodejs-base:v8.11.1
+
+ENV PTTG_API_ENDPOINT localhost
+ENV USER pttg
+ENV USER_ID 1000
+ENV GROUP pttg
+ENV NAME pttg-ip-stats-ui
+
+ARG VERSION
+
+WORKDIR /app
+
+RUN groupadd -r ${GROUP} && \
+    useradd -u ${USER_ID} -g ${GROUP} ${USER} -d /app && \
+    mkdir -p /app && \
+    chown -R ${USER}:${GROUP} /app
+
+COPY . /app
+RUN npm --loglevel warn install
+
+RUN chown -R ${USER}:${GROUP} /app
+
+USER ${USER_ID}
+
+ENTRYPOINT /app/run-test.sh

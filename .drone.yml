@@ -7,5 +7,29 @@ pipeline:
     commands:
       - docker build -t pttg-ip-stats-ui .
     when:
-      branch: master
+      branch: [master, EE-16843-add-test-task] # TODO EE-16843 remove when tested
+      event: push
+
+  test:
+    image: docker:17.09.1
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    commands:
+      - docker build -f Dockerfile_test -t pttg-ip-stats-ui-test .
+      - docker run pttg-ip-stats-ui-test
+    when:
+      event: push
+
+  install-docker-image:
+    image: docker:18.03
+    environment:
+      - DOCKER_HOST=tcp://172.17.0.1:2375
+    secrets:
+      - docker_password
+    commands:
+      - docker login -u="ukhomeofficedigital+pttg" -p=$${DOCKER_PASSWORD} quay.io
+      - docker tag pttg-ip-stats-ui quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
+      - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
+    when:
+      branch: [master, EE-16843-add-test-task] # TODO EE-16843 remove when tested
       event: push
