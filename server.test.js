@@ -1,17 +1,18 @@
+'use strict';
 const assert = require('assert');
 const mockRequire = require('mock-require');
 const request = require('supertest');
 
 const MOCK_CSV_RESPONSE = `From Date,To Date,Total Requests,Passed,Not Passed,Not Found,Error
-2019-01-01, 2019-01-31, 20, 15, 2, 2, 1`
+2019-01-01, 2019-01-31, 20, 15, 2, 2, 1`;
 
 const verifyOptions = function(capturedOptions) {
     assert.equal(capturedOptions.url, '/statistics');
     assert.equal(capturedOptions.baseUrl, 'http://localhost:8081/');
-    assert.deepEqual(capturedOptions.qs, { taxYear: '2018/2019' })
+    assert.deepEqual(capturedOptions.qs, { taxYear: '2018/2019' });
     assert.equal(capturedOptions.headers['x-auth-username'], 'some-username');
     assert.equal(capturedOptions.headers['x-auth-userid'], 'some-userid');
-}
+};
 
 describe('Stats UI server', function() {
     var server;
@@ -39,7 +40,7 @@ describe('Stats UI server', function() {
         mockRequire('request', function(options, callback) {
             capturedOptions = options;
             callback(null, 200, MOCK_CSV_RESPONSE);
-        })
+        });
         server = mockRequire.reRequire('./server');
 
         return request(server)
@@ -61,6 +62,6 @@ describe('Stats UI server', function() {
 
         request(server)
             .get('/?taxYear=2018/2019')
-            .expect(someErrorHttpCode, someResponse, done)
+            .expect(someErrorHttpCode, someResponse, done);
     });
-})
+});
