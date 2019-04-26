@@ -17,7 +17,6 @@ RUN groupadd -r ${GROUP} && \
 
 COPY . /app
 RUN npm --loglevel warn install --only=prod
-RUN npm --loglevel warn run postinstall
 
 RUN chmod a+x /app/run.sh
 
