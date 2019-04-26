@@ -20,6 +20,14 @@ pipeline:
     when:
       event: push
 
+  lint:
+    group: build
+    image: quay.io/ukhomeofficedigital/nodejs-base:v8.11.1
+    commands:
+      - npm run lint
+    when:
+      event: push
+
   install-docker-image:
     image: docker:18.03
     environment:
