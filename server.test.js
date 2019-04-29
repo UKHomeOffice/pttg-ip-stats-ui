@@ -78,5 +78,5 @@ describe('Stats UI server', function() {
             .get('/?taxYear=2018/2019')
             .expect(200)
             .expect('content-type', 'text/csv; charset=utf-8', done);
-    })
+    });
 });

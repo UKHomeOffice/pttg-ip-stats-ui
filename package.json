@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha server.test.js",
-    "lint": "status=0; eslint --ignore-pattern *.test.js . || status=$? ; eslint --config .eslintrctest.js --ext test.js . || status =$? ; exit $status"
+    "lint": "status=0; eslint --ignore-pattern *.test.js . || status=$? ; eslint --config .eslintrctest.js --ext test.js . || status=$? ; exit $status"
   },
   "repository": {
     "type": "git",
