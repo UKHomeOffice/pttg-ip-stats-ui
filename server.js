@@ -1,14 +1,18 @@
+'use strict';
 const express = require('express');
 
-const app = express();
-const port = process.env.SERVER_PORT || '8000';
+const config = require('./config');
+const log = require('./logger');
 
-app.get('/healthz', function (req, res) {
-  res.send({env: process.env.ENV, status: 'OK'})
-})
+const app = express();
+const port = config.SERVER_PORT;
+
+app.get('/healthz', function healthEndpoint(req, res) {
+    res.send({ env: config.ENV, status: 'OK' });
+});
 
 const server = app.listen(port, () => {
-    console.log('ui on:' + port)
-})
+    log.info('ui on:' + port);
+});
 
 module.exports = server;
