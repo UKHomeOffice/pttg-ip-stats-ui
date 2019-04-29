@@ -39,7 +39,7 @@ describe('Stats UI server', function() {
         var capturedOptions;
         mockRequire('request', function(options, callback) {
             capturedOptions = options;
-            callback(null, 200, MOCK_CSV_RESPONSE);
+            callback(null, {statusCode: 200}, MOCK_CSV_RESPONSE);
         });
         server = mockRequire.reRequire('./server');
 
@@ -53,15 +53,30 @@ describe('Stats UI server', function() {
 
     it('returns any errors from IP API to caller', function testErrorForwarding(done) {
         const someErrorHttpCode = 500;
-        const someResponse = 'some response';
+        const someResponseBody = 'some response';
 
         mockRequire('request', function(_, callback) {
-            callback('any error', someErrorHttpCode, someResponse);
+            callback('any error', {statusCode: someErrorHttpCode}, someResponseBody);
         });
         server = mockRequire.reRequire('./server');
 
         request(server)
             .get('/?taxYear=2018/2019')
-            .expect(someErrorHttpCode, someResponse, done);
+            .expect(someErrorHttpCode, someResponseBody, done);
     });
+
+    it('returns any headers from IP API to the caller', function testHeaderForwarding(done) {
+        const someHeaders = {'content-type': 'text/csv; charset=utf-8'};
+        const someResponse = {headers: someHeaders, body: '', statusCode: 200};
+
+        mockRequire('request', function(_, callback) {
+            callback(null, someResponse, 'any response body');
+        });
+        server = mockRequire.reRequire('./server');
+
+        request(server)
+            .get('/?taxYear=2018/2019')
+            .expect(200)
+            .expect('content-type', 'text/csv; charset=utf-8', done);
+    })
 });

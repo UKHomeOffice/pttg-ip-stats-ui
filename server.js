@@ -26,9 +26,11 @@ app.get('/', function forwardRequestForStatistics(req, res) {
     };
     request(requestOptions, (error, response, body) => {
         if (error) {
-            log.error(error);
+            log.error(`Error: ${error}`);
         }
-        res.status(response).send(body);
+        res.status(response.statusCode)
+        .set(response.headers)
+        .send(body);
     });
 });
 
