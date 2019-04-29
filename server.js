@@ -15,7 +15,7 @@ app.get('/healthz', function healthEndpoint(req, res) {
 });
 
 app.get('/', function forwardRequestForStatistics(req, res) {
-    const requestOptions = {
+    const upstreamRequestOptions = {
         url: '/statistics',
         baseUrl: API_ROOT,
         qs: req.query,
@@ -24,13 +24,13 @@ app.get('/', function forwardRequestForStatistics(req, res) {
             'x-auth-userid': req.get('x-auth-userid')
         }
     };
-    request(requestOptions, (error, response, body) => {
+    request(upstreamRequestOptions, (error, upstreamResponse, upstreamBody) => {
         if (error) {
             log.error(`Error: ${error}`);
         }
-        res.status(response.statusCode)
-        .set(response.headers)
-        .send(body);
+        res.status(upstreamResponse.statusCode)
+            .set(upstreamResponse.headers)
+            .send(upstreamBody);
     });
 });
 
