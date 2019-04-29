@@ -8,13 +8,13 @@ const log = require('./logger');
 const app = express();
 
 const PORT = config.SERVER_PORT;
-const API_ROOT = process.env.API_ROOT || 'http://localhost:8081/';
+const API_ROOT = config.API_ROOT || 'http://localhost:8081/';
 
 app.get('/healthz', function healthEndpoint(req, res) {
     res.send({ env: config.ENV, status: 'OK' });
 });
 
-app.get('/', function(req, res) {
+app.get('/', function forwardRequestForStatistics(req, res) {
     const requestOptions = {
         url: '/statistics',
         baseUrl: API_ROOT,
@@ -25,12 +25,15 @@ app.get('/', function(req, res) {
         }
     };
     request(requestOptions, (error, response, body) => {
+        if (error) {
+            log.error(error);
+        }
         res.status(response).send(body);
-    })
-})
+    });
+});
 
 const server = app.listen(PORT, () => {
     log.info('ui on:' + PORT);
-})
+});
 
 module.exports = server;
