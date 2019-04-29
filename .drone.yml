@@ -7,7 +7,7 @@ pipeline:
     commands:
       - docker build -t pttg-ip-stats-ui .
     when:
-      branch: [master, EE-16843-simple-ui] # TODO EE-16843 Make master only once happy that deployment works
+      branch: master
       event: push
 
   test:
@@ -40,7 +40,7 @@ pipeline:
       - docker tag pttg-ip-stats-ui quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
     when:
-      branch: [master, EE-16843-simple-ui] # TODO EE-16843 Make master only once happy that deployment works
+      branch: master
       event: push
 
   tag-docker-image-with-git-tag:
@@ -60,54 +60,5 @@ pipeline:
     image: plugins/git
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-stats-ui.git
-      - cd kube-pttg-ip-stats-ui && git checkout EE-16843-first-deployment-with-ingress && cd .. # TODO EE-16843 Remove once on master
     when:
       event: [push, deployment, tag]
-
-  deploy-to-dev-from-build-number:
-    image: quay.io/ukhomeofficedigital/kd:v0.8.0
-    environment:
-      - KUBE_NAMESPACE=pttg-ip-dev
-      - ENVIRONMENT=dev
-      - VERSION=build-${DRONE_BUILD_NUMBER}
-      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
-    secrets:
-      - pttg_ip_dev
-    commands:
-      - cd kube-pttg-ip-stats-ui
-      - ./deploy.sh
-    when:
-      branch: [master, EE-16843-simple-ui] # TODO EE-16843 Make master only once happy that deployment works
-      event: [push, tag]
-
-  deployment:
-    image: quay.io/ukhomeofficedigital/kd:v0.8.0
-    environment:
-      - KUBE_NAMESPACE=pttg-ip-${DRONE_DEPLOY_TO}
-      - ENVIRONMENT=${DRONE_DEPLOY_TO}
-      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
-    secrets:
-      - pttg_ip_dev
-      - pttg_ip_test
-    commands:
-      - cd kube-pttg-ip-stats-ui
-      - ./deploy.sh
-    when:
-      event: deployment
-      environment: [dev, test, preprod]
-
-  deploy-to-prod:
-    image: quay.io/ukhomeofficedigital/kd:v0.8.0
-    environment:
-      - KUBE_NAMESPACE=pttg-ip-pr
-      - ENVIRONMENT=pr
-      - KUBE_SERVER=https://kube-api-prod.prod.acp.homeoffice.gov.uk
-      # - WHITELIST=62.25.109.196/32,52.48.127.150/32,52.48.127.151/32,52.48.127.152/32,52.48.127.153/32,52.209.62.128/25,52.56.62.128/25,185.22.224.96,185.22.224.96/32,185.22.226.96/32
-    secrets:
-      - pttg_ip_pr
-    commands:
-      - cd kube-pttg-ip-stats-ui
-      - ./deploy.sh
-    when:
-      event: deployment
-      environment: pr
