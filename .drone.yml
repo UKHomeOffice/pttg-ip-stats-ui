@@ -76,5 +76,5 @@ pipeline:
       - cd kube-pttg-ip-stats-ui
       - ./deploy.sh
     when:
-      branch: [master, EE-16743-deploy-to-dev]
+      branch: [master, EE-16843-deploy-to-dev]
       event: [push, tag]
