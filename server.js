@@ -14,7 +14,7 @@ app.get('/healthz', function healthEndpoint(req, res) {
     res.send({ env: config.ENV, status: 'OK' });
 });
 
-app.get('/', function forwardRequestForStatistics(req, res) {
+app.get('/', function forwardRequestForStatistics(req, res, next) {
     const upstreamRequestOptions = {
         url: '/statistics',
         baseUrl: API_ROOT,
@@ -27,9 +27,9 @@ app.get('/', function forwardRequestForStatistics(req, res) {
     request(upstreamRequestOptions, (error, upstreamResponse, upstreamBody) => {
         if (error) {
             log.error(`Error: ${error}`);
-            throw new Error(error);
+            return next(error);
         }
-        res.status(upstreamResponse.statusCode)
+        return res.status(upstreamResponse.statusCode)
             .set(upstreamResponse.headers)
             .send(upstreamBody);
     });
