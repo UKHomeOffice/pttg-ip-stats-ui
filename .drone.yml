@@ -62,3 +62,19 @@ pipeline:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-stats-ui.git
     when:
       event: [push, deployment, tag]
+
+  deploy-to-dev-from-build-number:
+    image: quay.io/ukhomeofficedigital/kd:v0.8.0
+    environment:
+      - KUBE_NAMESPACE=pttg-ip-dev
+      - ENVIRONMENT=dev
+      - VERSION=build-${DRONE_BUILD_NUMBER}
+      - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
+    secrets:
+      - pttg_ip_dev
+    commands:
+      - cd kube-pttg-ip-stats-ui
+      - ./deploy.sh
+    when:
+      branch: [master, EE-16743-deploy-to-dev]
+      event: [push, tag]
