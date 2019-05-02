@@ -27,6 +27,7 @@ app.get('/', function forwardRequestForStatistics(req, res) {
     request(upstreamRequestOptions, (error, upstreamResponse, upstreamBody) => {
         if (error) {
             log.error(`Error: ${error}`);
+            throw new Error(error);
         }
         res.status(upstreamResponse.statusCode)
             .set(upstreamResponse.headers)
