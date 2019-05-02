@@ -7,7 +7,7 @@ pipeline:
     commands:
       - docker build -t pttg-ip-stats-ui .
     when:
-      branch: master
+      branch: [master, EE-16843-deploy-to-dev]
       event: push
 
   test:
