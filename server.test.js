@@ -39,7 +39,7 @@ describe('Stats UI server', function() {
         var capturedOptions;
         mockRequire('request', function(options, callback) {
             capturedOptions = options;
-            callback(null, {statusCode: 200}, MOCK_CSV_RESPONSE);
+            callback(null, { statusCode: 200 }, MOCK_CSV_RESPONSE);
         });
         server = mockRequire.reRequire('./server');
 
@@ -53,21 +53,27 @@ describe('Stats UI server', function() {
 
     it('returns any errors from IP API to caller', function testErrorForwarding(done) {
         const someErrorHttpCode = 500;
-        const someResponseBody = 'some response';
+        const someError = 'some sort of error';
 
         mockRequire('request', function(_, callback) {
-            callback('any error', {statusCode: someErrorHttpCode}, someResponseBody);
+            callback(someError, { statusCode: someErrorHttpCode }, 'any response');
         });
         server = mockRequire.reRequire('./server');
 
         request(server)
             .get('/?taxYear=2018/2019')
-            .expect(someErrorHttpCode, someResponseBody, done);
+            .expect(someErrorHttpCode)
+            .expect((res) => {
+                if (!(res.text.includes(someError))) {
+                     throw new Error(`Error: "${someError}" not in response `);
+                 }
+            })
+            .end(done);
     });
 
     it('returns any headers from IP API to the caller', function testHeaderForwarding(done) {
-        const someHeaders = {'content-type': 'text/csv; charset=utf-8'};
-        const someResponse = {headers: someHeaders, body: '', statusCode: 200};
+        const someHeaders = { 'content-type': 'text/csv; charset=utf-8' };
+        const someResponse = { headers: someHeaders, body: '', statusCode: 200 };
 
         mockRequire('request', function(_, callback) {
             callback(null, someResponse, 'any response body');
