@@ -13,7 +13,7 @@ const API_ROOT = config.API_ROOT || 'http://localhost:8081/';
 const CA_CERTS_PATH = config.CA_CERTS_PATH;
 
 function addCaCert(opts) {
-    if (opts.url && opts.url.toLowerCase().startsWith('https')) {
+    if (opts.baseUrl && opts.baseUrl.toLowerCase().startsWith('https')) {
         log.info(`Adding CA Cert from ${CA_CERTS_PATH}`);
         opts.ca = fs.readFileSync(CA_CERTS_PATH, 'utf8');
     }
