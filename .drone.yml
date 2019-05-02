@@ -60,6 +60,7 @@ pipeline:
     image: plugins/git
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-stats-ui.git
+      - cd kube-pttg-ip-stats-ui && git checkout EE-16843-first-deployment-with-ingress && cd .. # TODO EE-16843 Remove once on master
     when:
       event: [push, deployment, tag]
 
