@@ -64,7 +64,9 @@ describe('Stats UI server', function() {
             .get('/?taxYear=2018/2019')
             .expect(someErrorHttpCode)
             .expect((res) => {
-                if (!(res.text.includes(someError))) throw new Error(`Error: "${someError}" not in response `);
+                if (!(res.text.includes(someError))) {
+                     throw new Error(`Error: "${someError}" not in response `);
+                 }
             })
             .end(done);
     });
