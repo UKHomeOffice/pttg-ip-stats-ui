@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const fs = require('fs');
 const request = require('request');
 
 const config = require('./config');
@@ -12,10 +13,11 @@ const API_ROOT = config.API_ROOT || 'http://localhost:8081/';
 const CA_CERTS_PATH = config.CA_CERTS_PATH;
 
 function addCaCert(opts) {
-    if (opts.uri && opts.uri.toLowerCase().startsWith('https')) {
-        log.info(`Adding CA Cert from ${CA_CERTS_PATH}`)
-        opts.ca = fs.readFileSync(CA_CERTS_PATH, 'utf8')
+    if (opts.url && opts.url.toLowerCase().startsWith('https')) {
+        log.info(`Adding CA Cert from ${CA_CERTS_PATH}`);
+        opts.ca = fs.readFileSync(CA_CERTS_PATH, 'utf8');
     }
+    return opts;
 }
 
 app.get('/healthz', function healthEndpoint(req, res) {
@@ -23,7 +25,7 @@ app.get('/healthz', function healthEndpoint(req, res) {
 });
 
 app.get('/', function forwardRequestForStatistics(req, res, next) {
-    const upstreamRequestOptions = {
+    var upstreamRequestOptions = {
         url: '/statistics',
         baseUrl: API_ROOT,
         qs: req.query,
