@@ -40,7 +40,7 @@ pipeline:
       - docker tag pttg-ip-stats-ui quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:build-$${DRONE_BUILD_NUMBER}
     when:
-      branch: master
+      branch: [master, EE-16843-deploy-to-dev]
       event: push
 
   tag-docker-image-with-git-tag:
