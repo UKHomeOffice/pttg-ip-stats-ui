@@ -12,7 +12,7 @@ const verifyOptions = function(capturedOptions) {
     assert.deepEqual(capturedOptions.qs, { taxYear: '2018/2019' });
     assert.equal(capturedOptions.headers['x-auth-username'], 'some-username');
     assert.equal(capturedOptions.headers['x-auth-userid'], 'some-userid');
-    assert(capturedOptions.headers['Authorization'].startsWith('Basic '));
+    assert(capturedOptions.headers.Authorization.startsWith('Basic '));
 };
 
 describe('Stats UI server', function() {
