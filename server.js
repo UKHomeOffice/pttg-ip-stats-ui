@@ -27,7 +27,7 @@ app.get('/healthz', function healthEndpoint(req, res) {
 });
 
 app.get('/', function forwardRequestForStatistics(req, res, next) {
-    var upstreamRequestOptions = {
+    let upstreamRequestOptions = {
         url: '/statistics',
         baseUrl: API_ROOT,
         qs: req.query,
