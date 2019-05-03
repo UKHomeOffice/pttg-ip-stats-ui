@@ -11,6 +11,7 @@ const app = express();
 const PORT = config.SERVER_PORT;
 const API_ROOT = config.API_ROOT || 'http://localhost:8081/';
 const CA_CERTS_PATH = config.CA_CERTS_PATH;
+const IP_API_AUTH = config.IP_API_AUTH || '';
 
 function addCaCert(opts) {
     if (opts.baseUrl && opts.baseUrl.toLowerCase().startsWith('https')) {
@@ -32,7 +33,8 @@ app.get('/', function forwardRequestForStatistics(req, res, next) {
         qs: req.query,
         headers: {
             'x-auth-username': req.get('x-auth-username'),
-            'x-auth-userid': req.get('x-auth-userid')
+            'x-auth-userid': req.get('x-auth-userid'),
+            'Authorization': 'Basic ' + Buffer.from(IP_API_AUTH).toString('base64'),
         }
     };
     upstreamRequestOptions = addCaCert(upstreamRequestOptions);
