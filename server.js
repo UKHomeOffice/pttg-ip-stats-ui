@@ -16,6 +16,7 @@ function addCaCert(opts) {
     if (opts.baseUrl && opts.baseUrl.toLowerCase().startsWith('https')) {
         log.info(`Adding CA Cert from ${CA_CERTS_PATH}`);
         opts.ca = fs.readFileSync(CA_CERTS_PATH, 'utf8');
+        opts.strictSSL = false;
     }
     return opts;
 }
