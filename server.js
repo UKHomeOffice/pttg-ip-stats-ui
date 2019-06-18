@@ -2,6 +2,7 @@
 const express = require('express');
 const fs = require('fs');
 const request = require('request');
+const uuid = require('uuid/v4');
 
 const config = require('./config');
 const log = require('./logger');
@@ -34,6 +35,7 @@ app.get('/', function forwardRequestForStatistics(req, res, next) {
         headers: {
             'x-auth-username': req.get('x-auth-username'),
             'x-auth-userid': req.get('x-auth-userid'),
+            'x-correlation-id': uuid(),
             'Authorization': 'Basic ' + Buffer.from(IP_API_AUTH).toString('base64'),
         }
     };
