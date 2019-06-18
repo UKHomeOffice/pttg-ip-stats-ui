@@ -6,7 +6,7 @@ const request = require('supertest');
 const MOCK_CSV_RESPONSE = `From Date,To Date,Total Requests,Passed,Not Passed,Not Found,Error
 2019-01-01, 2019-01-31, 20, 15, 2, 2, 1`;
 
-const UUID_REGEX = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/
+const UUID_REGEX = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 
 const verifyOptions = function(capturedOptions) {
     assert.equal(capturedOptions.url, '/statistics');
@@ -15,7 +15,7 @@ const verifyOptions = function(capturedOptions) {
     assert.equal(capturedOptions.headers['x-auth-username'], 'some-username');
     assert.equal(capturedOptions.headers['x-auth-userid'], 'some-userid');
     assert(capturedOptions.headers.Authorization.startsWith('Basic '));
-    assert(capturedOptions.headers['x-correlation-id'].match(UUID_REGEX))
+    assert(capturedOptions.headers['x-correlation-id'].match(UUID_REGEX));
 };
 
 describe('Stats UI server', function() {
