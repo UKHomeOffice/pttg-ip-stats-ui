@@ -115,7 +115,7 @@ pipeline:
     environment:
       - KUBE_NAMESPACE=pttg-ip-dev
       - ENVIRONMENT=dev
-      - VERSION=build-${DRONE_BUILD_NUMBER}
+      - VERSION=${DRONE_BRANCH}
       - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     secrets:
       - pttg_ip_dev
@@ -123,7 +123,7 @@ pipeline:
       - cd kube-pttg-ip-stats-ui
       - ./deploy.sh
     when:
-      branch: master
+      branch: [master, EE-21420-test-deployment]
       event: [push, tag]
 
   deployment-to-non-prod:
