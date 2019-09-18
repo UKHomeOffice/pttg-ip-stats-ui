@@ -107,6 +107,7 @@ pipeline:
     image: plugins/git
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-stats-ui.git
+      - git checkout EE-21420-fix-deployment
     when:
       event: [push, deployment, tag]
 
