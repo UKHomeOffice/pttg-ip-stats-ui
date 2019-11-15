@@ -9,7 +9,7 @@ pipeline:
       - ./gradlew release -Prelease.useAutomaticVersion=true -x runBuildTasks -s -i
       - git describe --abbrev=0 --tags > ./tagSemver
     when:
-      branch: master
+      branch: [master, EE-28636-fix-deployment]
       event: push
 
   build-docker-image:
