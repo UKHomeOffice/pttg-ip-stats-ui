@@ -110,12 +110,12 @@ pipeline:
     when:
       event: [push, deployment, tag]
 
-  deploy-to-dev-from-semver:
+  deploy-to-dev-from-build-number:
     image: quay.io/ukhomeofficedigital/kd:v1.14.0
     environment:
       - KUBE_NAMESPACE=pttg-ip-dev
       - ENVIRONMENT=dev
-      - export VERSION=$(cat ./tagSemver)
+      - VERSION=build-${DRONE_BUILD_NUMBER}
       - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     secrets:
       - pttg_ip_dev
