@@ -20,7 +20,6 @@ pipeline:
       - docker build -t pttg-ip-stats-ui .
     when:
       event: push
-      branch: master # TODO EE-28636 remove this
 
   test:
     image: docker:17.09.1
@@ -87,7 +86,7 @@ pipeline:
       - docker tag pttg-ip-stats-ui quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$(cat ./tagSemver)
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$(cat ./tagSemver)
     when:
-      branch: master
+#      branch: master TODO EE-28636 uncomment this line
       event: push
 
   tag-docker-image-with-git-tag:
