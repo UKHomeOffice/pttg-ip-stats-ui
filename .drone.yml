@@ -20,6 +20,7 @@ pipeline:
       - docker build -t pttg-ip-stats-ui .
     when:
       event: push
+      branch: master # TODO EE-28636 remove this
 
   test:
     image: docker:17.09.1
@@ -30,6 +31,7 @@ pipeline:
       - docker run pttg-ip-stats-ui-test
     when:
       event: push
+      branch: master # TODO EE-28636 remove this
 
   lint:
     group: build
@@ -39,6 +41,7 @@ pipeline:
       - npm run lint
     when:
       event: push
+      branch: master # TODO EE-28636 remove this
 
   install-docker-image-with-githash-tag:
     image: docker:18.03
@@ -52,6 +55,7 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:${DRONE_COMMIT_SHA:0:8}
     when:
       event: push
+      branch: master # TODO EE-28636 remove this
 
   install-docker-image-from-feature-branch:
     image: docker:18.03
@@ -65,7 +69,7 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:${DRONE_BRANCH}
     when:
       branch:
-        exclude: master
+        exclude: [master, EE-28636-fix-deployment] # TODO EE-28636 remove branch
       event: push
 
   install-docker-image-from-master-branch-build:
@@ -102,6 +106,7 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$(cat ./tagSemver)
     when:
       event: tag
+      branch: master # TODO EE-28636 remove this
 
   clone-kube-project:
     image: plugins/git
