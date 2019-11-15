@@ -126,7 +126,7 @@ pipeline:
       - cd kube-pttg-ip-stats-ui
       - ./deploy.sh
     when:
-      branch: []master, EE-28636-fix-deployment]
+      branch: [master, EE-28636-fix-deployment]
       event: [push, tag]
 
   deployment-to-non-prod:
