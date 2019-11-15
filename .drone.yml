@@ -9,7 +9,7 @@ pipeline:
       - ./gradlew release -Prelease.useAutomaticVersion=true -x runBuildTasks -s -i
       - git describe --abbrev=0 --tags > ./tagSemver
     when:
-      branch: [master, EE-28636-fix-deployment]
+      branch: master
       event: push
 
   build-docker-image:
@@ -30,7 +30,6 @@ pipeline:
       - docker run pttg-ip-stats-ui-test
     when:
       event: push
-      branch: master # TODO EE-28636 remove this
 
   lint:
     group: build
@@ -40,7 +39,6 @@ pipeline:
       - npm run lint
     when:
       event: push
-      branch: master # TODO EE-28636 remove this
 
   install-docker-image-with-githash-tag:
     image: docker:18.03
@@ -54,7 +52,6 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:${DRONE_COMMIT_SHA:0:8}
     when:
       event: push
-      branch: master # TODO EE-28636 remove this
 
   install-docker-image-from-feature-branch:
     image: docker:18.03
@@ -68,7 +65,7 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:${DRONE_BRANCH}
     when:
       branch:
-        exclude: [master, EE-28636-fix-deployment] # TODO EE-28636 remove branch
+        exclude: master
       event: push
 
   install-docker-image-from-master-branch-build:
@@ -86,7 +83,7 @@ pipeline:
       - docker tag pttg-ip-stats-ui quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$(cat ./tagSemver)
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$(cat ./tagSemver)
     when:
-#      branch: master TODO EE-28636 uncomment this line
+      branch: master
       event: push
 
   tag-docker-image-with-git-tag:
@@ -105,15 +102,11 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/pttg-ip-stats-ui:$(cat ./tagSemver)
     when:
       event: tag
-      branch: master # TODO EE-28636 remove this
 
   clone-kube-project:
     image: plugins/git
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-stats-ui.git
-      - cd kube-pttg-ip-stats-ui
-      - git checkout EE-28636-fix-deployment
-      - cd ..
     when:
       event: [push, deployment, tag]
 
@@ -130,7 +123,7 @@ pipeline:
       - cd kube-pttg-ip-stats-ui
       - ./deploy.sh
     when:
-      branch: [master, EE-28636-fix-deployment]
+      branch: master
       event: [push, tag]
 
   deployment-to-non-prod:
