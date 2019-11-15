@@ -115,7 +115,7 @@ pipeline:
     environment:
       - KUBE_NAMESPACE=pttg-ip-dev
       - ENVIRONMENT=dev
-      - VERSION=$(cat ./tagSemver)
+      - export VERSION=$(cat ./tagSemver)
       - KUBE_SERVER=https://kube-api-notprod.notprod.acp.homeoffice.gov.uk
     secrets:
       - pttg_ip_dev
