@@ -107,7 +107,7 @@ pipeline:
     image: plugins/git
     commands:
       - git clone https://github.com/UKHomeOffice/kube-pttg-ip-stats-ui.git
-      - cd kube-pttg-stats-ui
+      - cd kube-pttg-ip- stats-ui
       - git checkout EE-28636-fix-deployment
       - cd ..
     when:
