@@ -141,7 +141,7 @@ pipeline:
       - cd kube-pttg-ip-stats-ui
       - ./deploy.sh
     when:
-      branch: master
+      #branch: master
       event: [push, tag]
 
   deployment-to-non-prod:
